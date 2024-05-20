@@ -1,0 +1,19 @@
+.container-fluid {
+    margin-top: 10px;
+}
+
+.push {
+    margin-left: 70px;
+   
+}
+
+.center {
+    margin-left: 50px;
+    max-width: 50px;
+}
+
+.logo-text {
+    font-size: 10px;
+    margin-right: 35px;
+    text-align: center;
+}
