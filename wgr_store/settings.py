@@ -159,12 +159,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu111.gitpod.io',
+    'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io',
 
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu111.gitpod.io',
+    'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io',
 
 ]
