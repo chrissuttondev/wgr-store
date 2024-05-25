@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Product
 
 
+# The class has been taken from the Boutique_Ado walkthrough
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'id',
