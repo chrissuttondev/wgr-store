@@ -33,7 +33,8 @@
               </div>
               <div class="col-6 center">
                 <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="I am searching for..." aria-label="Search">
+                    <input method="get" action="{% url 'product_search'%}">
+                    {{ form.as_p }}
                   </form>
               </div>
               <div class="col push">

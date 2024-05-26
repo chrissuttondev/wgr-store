@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h3> Search results</h3>
+<ul>
+    {% for product in products %}
+    <li>{{ product.title }}, {{ product.price }}</li>
+    {% empty %}
+    <li>We got nothing!</li>
+</ul>
+
+
+{% endblock %}
