@@ -46,17 +46,10 @@ def product_search(request):
 
     if query:
         query_list = query.split()
-        products = products.filter(
-            Q(title__icontains=query) |
-            Q(description__icontains=query) |
-            Q(category__icontains=query)
-        )
+        q_objects = Q()
         for word in query_list:
-            products = products.filter(
-                Q(title__icontains=word) |
-                Q(description__icontains=word) |
-                Q(category__icontains=word)
-            ). distinct()
+            q_objects |= Q(title__icontains=word) | Q(description__icontains=word) | Q(category__icontains=word) # noqa
+        products = products.filter(q_objects).distinct()
 
     context = {
         'form': form,
