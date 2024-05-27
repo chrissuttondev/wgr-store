@@ -54,6 +54,7 @@ def product_search(request):
     context = {
         'form': form,
         'products': products,
+        # 'searched': searched,
     }
 
     return render(request, 'products/product_search.html', context)
