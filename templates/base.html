@@ -58,8 +58,9 @@
                             <a class="nav-link" href="#" tabindex="1" aria-disabled="true"><i class="bi bi-cart"></i></a>
                         </li>
                     </ul>
-                    <form class="d-flex" method="get" action="{% url 'product_search' %}">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex" method="post" action="{% url 'product_search' %}">
+                        {% csrf_token %}
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
                         <button class="btn btn-outline-secondary" type="submit">Search</button>
                     </form>
                 </div>

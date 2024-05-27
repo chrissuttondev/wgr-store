@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404 # noqa
 from django.db.models import Q
 from .models import Product
-from .forms import SearchForm
 
 
 # Taken from the boutique ado walkthrough project.
@@ -9,11 +8,9 @@ def all_products(request):
     """ A view to show all products"""
 
     products = Product.objects.all()
-    form = SearchForm()
 
     context = {
         'products': products,
-        'form': form,
     }
 
     return render(request, 'products/products.html', context)
@@ -24,37 +21,37 @@ def product_info(request, product_id):
     """ A view to show individual products info"""
 
     product = get_object_or_404(Product, pk=product_id)
-    form = SearchForm()
 
     context = {
         'product': product,
-        'form': form,
     }
 
     return render(request, 'products/product_info.html', context)
 
 
-print('Testing search')
-
-
 # Search view
 def product_search(request):
     """ A view to show products based on user search queries"""
-    form = SearchForm(request.GET)
-    query = request.GET.get('query', '')
-    products = Product.objects.all()
-
-    if query:
-        query_list = query.split()
-        q_objects = Q()
-        for word in query_list:
-            q_objects |= Q(title__icontains=word) | Q(description__icontains=word) | Q(category__icontains=word) # noqa
-        products = products.filter(q_objects).distinct()
-
-    context = {
-        'form': form,
-        'products': products,
-        # 'searched': searched,
-    }
-
-    return render(request, 'products/product_search.html', context)
+    if request.method == "POST":
+        searched = request.POST['searched']
+        # Query The Products DB Model
+        products = Product.objects.filter(Q(title__icontains=searched) |
+                                          Q(description__icontains=searched) |
+                                          Q(category__icontains=searched)
+                                          )
+        # Prepare context
+        context = {
+            'products': products,
+            'searched': searched,
+        }
+        # Test for null
+        if not products.exists():
+            return render(request, "products/product_search.html", context)
+        else:
+            return render(request, "products/product_search.html", context)
+    else:
+        context = {
+            'products': None,
+            'searched': '',
+        }
+        return render(request, "products/product_search.html", context)
