@@ -29,7 +29,7 @@ def product_info(request, product_id):
     return render(request, 'products/product_info.html', context)
 
 
-# Search view
+# Search view https://github.com/flatplanet/Django-Ecommerce/blob/main/store/templates/search.html # noqa
 def product_search(request):
     """ A view to show products based on user search queries"""
     if request.method == "POST":
@@ -55,3 +55,52 @@ def product_search(request):
             'searched': '',
         }
         return render(request, "products/product_search.html", context)
+
+
+# Category Views
+def mens_products(request):
+    """ A view to show all mens products"""
+
+    products = Product.objects.filter(category="men's clothing")
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'products/products_mens.html', context)
+
+
+def womens_products(request):
+    """ A view to show all womens products"""
+
+    products = Product.objects.filter(category="women's clothing")
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'products/products_womens.html', context)
+
+
+def jewelery_products(request):
+    """ A view to show all jewelery"""
+
+    products = Product.objects.filter(category="jewelery")
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'products/products_jewelery.html', context)
+
+
+def electronics_products(request):
+    """ A view to show all electronics"""
+
+    products = Product.objects.filter(category="electronics")
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'products/products_electronics.html', context)
