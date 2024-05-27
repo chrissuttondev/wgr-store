@@ -6,7 +6,7 @@
 
 <ul>
     {% for cart_item in cart_items %}
-        <li>{{ cart_item.quantity }} x {{ cart_item.product.name }}</li>
+        <li>{{ cart_item.quantity }} x {{ cart_item.product.title }} {{cart_item.product.image_url}}</li>
     {% endfor %}
 </ul>
 
