@@ -1,27 +1,15 @@
-from django.shortcuts import render
-from .models import Cart
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import CartItem
 from products.models import Product
 
 
-# Create your views here.
-def cart(request):
-    """ A view to show the cart"""
-
-    items = Cart.objects.filter(user=request.user)
-    total = sum(item.product.price * item.quantity for item in items)
-
-    context = {
-        'items': items,
-        'total': total,
-    }
-
-    return render(request, 'cart/cart.html', context)
-
-
-def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
-    item, created = Cart.objects.get_or_create(product=product,
-                                               user=request.user)
-    item.quantity += 1
-    item.save()
-    return render(request, 'cart/cart.html')
+def cart_view(request):
+    """ A view to dispaly the cart"""
+    if request.user.is_authenticated:
+        cart_items = CartItem.Objects.filter(user=request.user)
+    else:
+        cart = request.session.get('cart', [])
+        cart_items = [CartItem(product_id=item['product_id'],
+                      quantity=item['quantity']) for item in cart]
+    return render(request, 'cart/cart.html', {'cart_items': cart_items})

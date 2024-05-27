@@ -4,4 +4,10 @@
 
 <h3>Cart</h3>
 
+<ul>
+    {% for cart_item in cart_items %}
+        <li>{{ cart_item.quantity }} x {{ cart_item.product.name }}</li>
+    {% endfor %}
+</ul>
+
 {% endblock %}
