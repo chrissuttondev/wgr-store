@@ -54,3 +54,23 @@ def remove_from_cart(request, cart_item_id):
         cart = [item for item in cart if item['product_id'] != cart_item_id]
         request.session['cart'] = cart
     return redirect('cart_view')
+
+
+def update_cart(request, product_id):
+    """ A view to update quantity of cart item """
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=product_id)
+        cart_item = get_object_or_404(
+                    CartItem, user=request.user,
+                    product=product)
+        quantity = int(request.POST.get('quantity'))
+        cart_item.quantity = quantity
+        cart_item.save()
+    else:
+        cart = request.session.get('cart', [])
+        for item in cart:
+            if item['product_id'] == str(product_id):
+                item['quantity'] = int(request.POST.get('quantity'))
+                break
+        request.session['cart'] = cart
+    return redirect('cart_view')
