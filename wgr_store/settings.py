@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io']
+ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io', 'wgr-store-8562f87d0acf.herokuapp.com/']
 
 
 # Application definition
