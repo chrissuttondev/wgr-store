@@ -28,6 +28,7 @@ def add_to_cart(request, product_id):
                         product=product)
         if not created:
             cart_item.quantity += 1
+            print(cart_item.quantity)
             cart_item.save()
             print(f"Cart Item: {cart_item}")
     else:
@@ -51,7 +52,7 @@ def remove_from_cart(request, cart_item_id):
         cart_item = get_object_or_404(
                     CartItem, pk=cart_item_id,
                     user=request.user)
-        print(cart_item)            
+        print(cart_item)           
         cart_item.delete()
     else:
         cart = request.session.get('cart', [])
