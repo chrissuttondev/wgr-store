@@ -10,8 +10,8 @@
                     <tr>
                         <th>Product</th>
                         <th>Quantity</th>
-                        <th>Item Price</th>
-                        <th>Total</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -23,12 +23,13 @@
                             <td>£{{ item.product.price }}</td>
                             <td>£{{ item.get_total_price }}</td>
                             <td>
-                                <form action="{% url 'remove_from_cart' item.product.id %}" method="post" class="d-inline">
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" class="d-inline">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
                                 </form>
                                 <form action="{% url 'cart_update' item.product.id %}" method="post" class="d-inline">
                                     {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
                                     <input type="number" name="quantity" value="{{ item.quantity }}" class="form-control d-inline w-50" min="1">
                                     <button type="submit" class="btn btn-secondary btn-sm">Update</button>
                                 </form>
@@ -39,7 +40,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                        <td colspan="2">£{{ cart.get_total_cost }}</td>
+                        <td colspan="2">£{{ total_cost }}</td>
                     </tr>
                 </tfoot>
             </table>

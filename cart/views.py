@@ -8,11 +8,14 @@ def cart_view(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
         print(cart_items)
+        total_cost = sum(item.get_total_price() for item in cart_items)
+        print(total_cost)
     else:
         cart = request.session.get('cart', [])
         cart_items = [CartItem(product_id=item['product_id'],
                       quantity=item['quantity']) for item in cart]
-    return render(request, 'cart/cart.html', {'cart_items': cart_items})
+        total_cost = sum(item.get_total_price() for item in cart_items)
+    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
 
 
 def add_to_cart(request, product_id):
@@ -48,10 +51,12 @@ def remove_from_cart(request, cart_item_id):
         cart_item = get_object_or_404(
                     CartItem, pk=cart_item_id,
                     user=request.user)
+        print(cart_item)            
         cart_item.delete()
     else:
         cart = request.session.get('cart', [])
         cart = [item for item in cart if item['product_id'] != cart_item_id]
+        cart_item.delete()
         request.session['cart'] = cart
     return redirect('cart_view')
 
