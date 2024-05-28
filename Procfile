@@ -1,0 +1,1 @@
+web: gunicorn wgr_store.wsgi:application
