@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io', 'wgr-store-8562f87d0acf.herokuapp.com/']
+ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io', 'wgr-store-8562f87d0acf.herokuapp.com']
 
 
 # Application definition
@@ -122,8 +122,6 @@ else:
     }
 
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -175,7 +173,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io',
 
 ]
-
 
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io',
