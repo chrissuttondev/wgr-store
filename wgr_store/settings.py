@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io', 'wgr-store-8562f87d0acf.herokuapp.com']
+ALLOWED_HOSTS = ['8000-chrissuttondev-wgrstore-9gv2ofibpo1.ws-eu115.gitpod.io', 'wgr-store-8562f87d0acf.herokuapp.com']  # noqa
 
 
 # Application definition
@@ -175,6 +175,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-chrissuttondev-wgrstore-4hii29k3put.ws-eu114.gitpod.io',
+    'https://8000-chrissuttondev-wgrstore-9gv2ofibpo1.ws-eu115.gitpod.io',
 
 ]

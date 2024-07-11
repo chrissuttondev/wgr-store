@@ -4,7 +4,7 @@ from products.models import Product
 
 
 def cart_view(request):
-    """ A view to dispaly the cart"""
+    """ A view to display the cart """
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
         print(cart_items)
@@ -12,10 +12,13 @@ def cart_view(request):
         print(total_cost)
     else:
         cart = request.session.get('cart', [])
-        cart_items = [CartItem(product_id=item['product_id'],
-                      quantity=item['quantity']) for item in cart]
+        cart_items = []
+        for idx, item in enumerate(cart):
+            cart_item = CartItem(product_id=item['product_id'], quantity=item['quantity'])  # noqa
+            cart_item.id = idx
+            cart_items.append(cart_item)
         total_cost = sum(item.get_total_price() for item in cart_items)
-    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})
+    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost}) # noqa
 
 
 def add_to_cart(request, product_id):
@@ -49,15 +52,13 @@ def add_to_cart(request, product_id):
 
 def remove_from_cart(request, cart_item_id):
     if request.user.is_authenticated:
-        cart_item = get_object_or_404(
-                    CartItem, pk=cart_item_id,
-                    user=request.user)
-        print(cart_item)           
+        cart_item = get_object_or_404(CartItem, pk=cart_item_id, user=request.user)  # noqa
+        print(cart_item)
         cart_item.delete()
     else:
         cart = request.session.get('cart', [])
-        cart = [item for item in cart if item['product_id'] != cart_item_id]
-        cart_item.delete()
+        cart_item_id = int(cart_item_id)
+        cart.pop(cart_item_id)
         request.session['cart'] = cart
     return redirect('cart_view')
 
@@ -66,9 +67,7 @@ def update_cart(request, product_id):
     """ A view to update quantity of cart item """
     if request.user.is_authenticated:
         product = get_object_or_404(Product, pk=product_id)
-        cart_item = get_object_or_404(
-                    CartItem, user=request.user,
-                    product=product)
+        cart_item = get_object_or_404(CartItem, user=request.user, product=product)  # noqa
         quantity = int(request.POST.get('quantity'))
         cart_item.quantity = quantity
         cart_item.save()
