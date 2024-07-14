@@ -7,46 +7,51 @@ def cart_view(request):
     """ A view to display the cart """
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
-        print(cart_items)
         total_cost = sum(item.get_total_price() for item in cart_items)
-        print(total_cost)
+
     else:
         cart = request.session.get('cart', [])
         cart_items = []
-        for idx, item in enumerate(cart):
-            cart_item = CartItem(product_id=item['product_id'], quantity=item['quantity'])  # noqa
-            cart_item.id = idx
+        for item in cart:
+            product = get_object_or_404(Product, pk=item['product_id'])
+            cart_item = {
+                'product': product,
+                'quantity': item['quantity'],
+                'get_total_price': product.price * item['quantity']
+            }
+
             cart_items.append(cart_item)
-        total_cost = sum(item.get_total_price() for item in cart_items)
-    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost}) # noqa
+        total_cost = sum(item['get_total_price'] for item in cart_items)
+
+    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total_cost': total_cost})  # noqa
 
 
 def add_to_cart(request, product_id):
-    print(f"Adding to cart: {product_id}")
+    product = get_object_or_404(Product, pk=product_id)
+    quantity = int(request.POST.get('quantity', 1))
+
     if request.user.is_authenticated:
-        product = get_object_or_404(Product, pk=product_id)
-        print(product)
         cart_item, created = CartItem.objects.get_or_create(
-                        user=request.user,
-                        product=product)
+            user=request.user,
+            product=product
+        )
+
         if not created:
-            cart_item.quantity += 1
-            print(cart_item.quantity)
-            cart_item.save()
-            print(f"Cart Item: {cart_item}")
+            cart_item.quantity += quantity
+        else:
+            cart_item.quantity = quantity
+        cart_item.save()
+
     else:
         cart = request.session.get('cart', [])
-        product_id = str(product_id)
-        print(product_id)
-        found = False
         for item in cart:
-            if item['product_id'] == product_id:
-                item['quantity'] += 1
-                found = True
+            if item['product_id'] == str(product_id):
+                item['quantity'] += quantity
                 break
-        if not found:
-            cart.append({'product_id': product_id, 'quantity': 1})
+        else:
+            cart.append({'product_id': str(product_id), 'quantity': quantity})
         request.session['cart'] = cart
+
     return redirect('cart_view')
 
 
