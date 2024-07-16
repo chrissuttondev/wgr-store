@@ -63,9 +63,12 @@ def remove_from_cart(request, cart_item_id):
         cart_item.delete()
     else:
         cart = request.session.get('cart', [])
-        cart_item_id = int(cart_item_id)
-        cart.pop(cart_item_id)
-        request.session['cart'] = cart
+        try:
+            cart_item_id = int(cart_item_id)
+            cart.pop(cart_item_id)
+            request.session['cart'] = cart
+        except (IndexError, ValueError):
+            pass
     return redirect('cart_view')
 
 

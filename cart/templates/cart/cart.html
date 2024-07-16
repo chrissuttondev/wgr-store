@@ -23,10 +23,17 @@
                             <td>£{{ item.product.price }}</td>
                             <td>£{{ item.get_total_price }}</td>
                             <td>
-                                <form action="{% url 'remove_from_cart' item.product.id %}" method="post" class="d-inline">
+                                {% if user.is_authenticated %}
+                                <form action="{% url 'remove_from_cart' item.id %}" method="post" class="d-inline">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
                                 </form>
+                                {% else %}
+                                <form action="{% url 'remove_from_cart' forloop.counter0 %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
+                                </form>
+                                {% endif %}
                                 <form action="{% url 'cart_update' item.product.id %}" method="post" class="d-inline">
                                     {% csrf_token %}
                                     <input type="hidden" name="product_id" value="{{ item.product.id }}">
