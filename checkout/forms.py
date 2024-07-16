@@ -8,4 +8,4 @@ class CheckoutForm(forms.Form):
         required=True,
         label='Shipping Address'
         )
-    email_adress = forms.EmailField(required=False, label='Email Address')
+    email_add = forms.EmailField(required=False, label='Email Address')

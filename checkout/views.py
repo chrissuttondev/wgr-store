@@ -6,20 +6,21 @@ from .forms import CheckoutForm
 
 
 # Create your views here.
-def create_order(user, email_ad, shipping_add, cart_items):
+def create_order(user, email_add, shipping_add, cart_items):
     """ A view to create customers orders from the associated cart items """
-    total_price = sum(item.get_total_price for item in cart_items)
+    total_price = sum(item.get_total_price() for item in cart_items)
+    print(user, shipping_add, total_price, email_add, cart_items)
     order = Order.objects.create(
         user=user,
         total_price=total_price,
-        shipping_address=shipping_add,
+        shipping_add=shipping_add,
     )
     for item in cart_items:
         Order_item.objects.create(
             order=order,
             product=item.product,
             quantity=item.quantity,
-            price=item.get_total_price
+            price=item.get_total_price()
         )
     return order
 
@@ -29,8 +30,8 @@ def checkout_view(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            shipping_address = form.cleaned_data.get('shipping_address')
+            email = form.cleaned_data.get('email_add')
+            shipping_address = form.cleaned_data.get('shipping_add')
 
             if request.user.is_authenticated:
                 user = request.user
@@ -52,7 +53,7 @@ def checkout_view(request):
             else:
                 request.session['cart'] = []
 
-            return redirect('checkout/order_confirmation', order_id=order.id)
+            return redirect(f'order_confirmation/{order.id}/')
 
     else:
         form = CheckoutForm()
