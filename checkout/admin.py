@@ -3,7 +3,8 @@ from .models import Order, Order_item
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['order_number', 'user', 'total_price',  'created_at', 'status']  # noqa
+    list_display = ['order_number', 'user',
+                    'total_price',  'created_at', 'status']
     readonly_fields = ['order_number']
 
 

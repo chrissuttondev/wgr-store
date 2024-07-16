@@ -1,7 +1,15 @@
 {% extends "base.html" %}
-{% load static %}
 {% block content %}
-
-<p>Hello</p>
-
+<div class="container">
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order! Your order Number is {{ order.order_number }}.</p>
+    <p>Total: £{{ order.total_price }}</p>
+    <h3>Order Details</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.quantity }} x {{ item.product.title }} - £{{ item.price }}</li>
+        {% endfor %}
+    </ul>
+    <p>Shipping Address: {{ order.shipping_add }}</p>
+</div>
 {% endblock %}
