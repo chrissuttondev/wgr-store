@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import CartItem, Order_item, Order
 from .forms import CheckoutForm
@@ -8,13 +8,13 @@ from .forms import CheckoutForm
 def create_order(user, email_ad, shipping_add, cart_items):
     """ A view to create customers orders from the associated cart items """
     total_price = sum(item.get_total_price for item in cart_items)
-    order = Order.Objects.create(
+    order = Order.objects.create(
         user=user,
         total_price=total_price,
         shipping_address=shipping_add,
     )
     for item in cart_items:
-        Order_item.Objects.create(
+        Order_item.objects.create(
             order=order,
             product=item.product,
             quantity=item.quantity,
@@ -41,7 +41,8 @@ def checkout_view(request):
                 CartItem
                 (product_id=item['product_id'],
                  quantity=item['quantity'])
-                for item in cart]
+                for item in cart
+                ]
 
         order = create_order(user, email, shipping_address, cart_items)
 

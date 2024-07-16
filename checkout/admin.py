@@ -8,4 +8,5 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-admin.site.register(Order, Order_item)
+admin.site.register(Order)
+admin.site.register(Order_item)
