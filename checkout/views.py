@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from .models import Order_item, Order
 from cart.models import CartItem
 from .forms import CheckoutForm
@@ -61,8 +60,11 @@ def checkout_view(request):
     return render(request, 'checkout/checkout.html', {'form': form})
 
 
-@login_required
+# @login_required
 def order_confirmation(request, order_id):
     """ A view to display the order confirmation page."""
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'checkout/order_confirmation.html', {'order': order})  # noqa
+    return render(
+        request,
+        'checkout/order_confirmation.html',
+        {'order': order})

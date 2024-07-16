@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('cart/', views.cart_view, name='cart_view'),
     path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
-    path('cart/remove/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'),  # noqa
-    path('cart/update/<int:product_id>/', views.update_cart, name='cart_update'), # noqa
+    path('cart/remove/<int:cart_item_id>/',
+         views.remove_from_cart, name='remove_from_cart'),
+    path('cart/update/<int:product_id>/',
+         views.update_cart, name='cart_update'),
 ]
