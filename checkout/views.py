@@ -8,7 +8,6 @@ from .forms import CheckoutForm
 def create_order(user, email_add, shipping_add, cart_items):
     """ A view to create customers orders from the associated cart items """
     total_price = sum(item.get_total_price() for item in cart_items)
-    print(user, shipping_add, total_price, email_add, cart_items)
     order = Order.objects.create(
         user=user,
         total_price=total_price,
