@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import CartItem, Order_item, Order
+from .models import Order_item, Order
+from cart.models import CartItem
 from .forms import CheckoutForm
 
 
@@ -31,36 +32,36 @@ def checkout_view(request):
             email = form.cleaned_data.get('email')
             shipping_address = form.cleaned_data.get('shipping_address')
 
-        if request.user.is_authenticated:
-            user = request.user
-            cart_items = CartItem.objects.filter(user=user)
-        else:
-            user = None
-            cart = request.session.get('cart', [])
-            cart_items = [
-                CartItem
-                (product_id=item['product_id'],
-                 quantity=item['quantity'])
-                for item in cart
-                ]
+            if request.user.is_authenticated:
+                user = request.user
+                cart_items = CartItem.objects.filter(user=user)
+            else:
+                user = None
+                cart = request.session.get('cart', [])
+                cart_items = [
+                    CartItem
+                    (product_id=item['product_id'],
+                     quantity=item['quantity'])
+                    for item in cart
+                    ]
 
-        order = create_order(user, email, shipping_address, cart_items)
+            order = create_order(user, email, shipping_address, cart_items)
 
-        if request.user.is_authenticated:
-            cart_items.delete()
-        else:
-            request.session['cart'] = []
+            if request.user.is_authenticated:
+                cart_items.delete()
+            else:
+                request.session['cart'] = []
 
-        return redirect('order_confirmation', order_id=order.id)
+            return redirect('checkout/order_confirmation', order_id=order.id)
 
     else:
         form = CheckoutForm()
 
-    return render(request, 'checkout.html', {'form': form})
+    return render(request, 'checkout/checkout.html', {'form': form})
 
 
 @login_required
 def order_confirmation(request, order_id):
     """ A view to display the order confirmation page."""
     order = get_object_or_404(Order, id=order_id)
-    return render(request, 'order_confirmation.html', {'order': order})
+    return render(request, 'checkout/order_confirmation.html', {'order': order})  # noqa
