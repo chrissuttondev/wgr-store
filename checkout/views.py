@@ -5,13 +5,15 @@ from .forms import CheckoutForm
 
 
 # Create your views here.
-def create_order(user, email_add, shipping_add, cart_items):
+def create_order(user, email_add, shipping_add, cart_items, full_name):
     """ A view to create customers orders from the associated cart items """
     total_price = sum(item.get_total_price() for item in cart_items)
     order = Order.objects.create(
         user=user,
         total_price=total_price,
         shipping_add=shipping_add,
+        email_add=email_add,
+        full_name=full_name,
     )
     for item in cart_items:
         Order_item.objects.create(
@@ -30,6 +32,7 @@ def checkout_view(request):
         if form.is_valid():
             email = form.cleaned_data.get('email_add')
             shipping_address = form.cleaned_data.get('shipping_add')
+            name = form.cleaned_data.get('name')
 
             if request.user.is_authenticated:
                 user = request.user
@@ -44,7 +47,8 @@ def checkout_view(request):
                     for item in cart
                     ]
 
-            order = create_order(user, email, shipping_address, cart_items)
+            order = create_order(
+                user, email, shipping_address, cart_items, name)
 
             if request.user.is_authenticated:
                 cart_items.delete()
